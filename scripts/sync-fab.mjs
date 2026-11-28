@@ -20,7 +20,8 @@
 // compartilha o slot.
 //
 // Sem logo de set: a LSS não expõe logos transparentes por set em página
-// pública estável (diferente da Bandai) — setLogo cai na arte da 1ª carta.
+// pública estável (diferente da Bandai) — setLogo fica vazio e a tela mostra
+// o nome do set (o que não tem logo curado em data/fab/set-logos/).
 //
 //   node scripts/sync-fab.mjs
 import { fileURLToPath } from "node:url";

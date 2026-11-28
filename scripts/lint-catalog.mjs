@@ -8,7 +8,9 @@
 //
 // Erro DURO (exit 1): ids duplicados, carta sem id/nome/set, catálogo zerado
 //   OU não lido quando a régua diz que havia cartas (scripts/lib/regua-catalogo.mjs;
-//   de 1 a 99 cartas vale o atalho de amostra), e — a trava que importa pras CONTAS —
+//   de 1 a 99 cartas vale o atalho de amostra), set cujo setLogo é a imagem de uma
+//   carta dele (contrato 3 do CATALOGO: sem logo próprio, setLogo "" e a tela
+//   mostra o nome), e — a trava que importa pras CONTAS —
 //   id publicado que SUMIU ou passou a apontar pra outra carta.
 // AVISO (exit 0): contagem caiu vs a régua (data/catalog-baseline.json), % de
 //   imagem baixou muito, id renumerado, id de produto do TCGplayer que a fonte
@@ -29,6 +31,7 @@ import { fileURLToPath } from "node:url";
 import { resolveMergedId } from "./lib/set-supersede.mjs";
 import { classificaMudanca, assinatura, idiomaDe, numDe, setIdsComVariosNomes } from "./lib/id-stability.mjs";
 import { avaliaRegua, medeCatalogo } from "./lib/regua-catalogo.mjs";
+import { setsComLogoDeCarta } from "./lib/logo-de-carta.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const BASELINE = new URL("data/catalog-baseline.json", ROOT);
@@ -105,6 +108,15 @@ for (const [game, dir] of Object.entries(GAMES)) {
   const { sets, imgPct, dupes, broken } = medeCatalogo(cards);
   if (dupes) errors.push(`${game}: ${dupes} id(s) duplicado(s)`);
   if (broken) errors.push(`${game}: ${broken} carta(s) sem id/nome/set`);
+
+  // Contrato 3 do docs/CATALOGO.md: set sem logo próprio fica com setLogo ""
+  // e a tela mostra o NOME; ilustração de carta no lugar do logo é o que a
+  // regra proíbe (o One Piece Carddass fazia isso até 2026-11-28). Erro duro,
+  // porque o sync que faz isso é código nosso, não dado de fonte: quem barra é
+  // este lint e o teste tests/logo-de-carta.test.mjs.
+  for (const s of setsComLogoDeCarta(cards)) {
+    errors.push(`${game}: set "${s.set}" (${s.setId}) usa a imagem de uma carta como setLogo (${s.logo}; ${s.cartas} carta(s)) — sem logo próprio o setLogo fica "" e a tela mostra o nome (contrato 3 do docs/CATALOGO.md)`);
+  }
 
   // Um setId = um set. AVISO, não erro, de propósito: o lint roda no build
   // completo e um erro aqui derruba o deploy inteiro. Carta congelada pelo
