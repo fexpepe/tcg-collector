@@ -28,7 +28,8 @@ import { cardCode } from "./lib/card-code.mjs";
 // nome de deck com "</script>" fechava o bloco e injetava HTML no <head> (ver
 // o porquê em scripts/lib/json-ld.mjs; tests/json-ld.test.mjs confere).
 import { jsonLdSeguro } from "./lib/json-ld.mjs";
-import { montaSitemaps, enderecosDoPost } from "./lib/sitemap.mjs";
+import { montaSitemaps, enderecosDoPost, paresDaHome } from "./lib/sitemap.mjs";
+import { CAMINHO_EN } from "../functions/_lib/home-en.js";
 // Endereço de cada jogo (/games/<url>) e o nome de cada carta no endereço:
 // moram em functions/_lib porque a borda usa a mesma régua (ver lá).
 import { JOGOS_URL, jogoDaUrl } from "../functions/_lib/jogos.js";
@@ -642,7 +643,10 @@ function buildSitemaps(setPages, deckPages, artistPages, blogPosts) {
     }
   }
   return montaSitemaps(ORIGIN, [
-    ["sitemap-pages.xml", STATIC_URLS.filter((p) => p !== "/blog" || (blogPosts || []).length).map((p) => ORIGIN + p)],
+    // A home e a home em inglês (/en/, functions/en.js) vão juntas, cada uma com
+    // o hreflang das duas; as outras páginas são só a URL.
+    ["sitemap-pages.xml", STATIC_URLS.filter((p) => p !== "/blog" || (blogPosts || []).length)
+      .flatMap((p) => (p === "/" ? paresDaHome(ORIGIN, CAMINHO_EN) : [ORIGIN + p]))],
     ["sitemap-games.xml", jogos.map((url) => `${ORIGIN}/games/${url}`)],
     ["sitemap-sets.xml", setPages.map((s) => `${ORIGIN}/games/${s.url}/${s.slug}`)],
     ["sitemap-sets-en.xml", setPages.map((s) => `${ORIGIN}/games/${s.url}/${s.slug}-en`)],

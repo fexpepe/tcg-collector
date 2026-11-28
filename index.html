@@ -6,6 +6,15 @@
     <title data-i18n="title.home">Sleevu — Coleção de cartas TCG: Pokémon, Magic, Lorcana e mais</title>
     <meta name="description" content="Acompanhe suas coleções de TCG — Pokémon, Lorcana, One Piece, Naruto e mais — por carta, variante e quantidade. Grátis: crie sua conta e registre tudo em qualquer aparelho.">
     <link rel="canonical" href="https://sleevu.app/">
+    <!-- A home tem versão em inglês em /en/ (functions/en.js; 2026-11-28). As três
+         tags valem pras DUAS páginas (a /en/ é este mesmo HTML, trocado na
+         borda): cada uma aponta pra si e pra irmã, e o inglês é o x-default, como
+         nas páginas de set (-en): é pra onde o Google manda quem busca num
+         idioma que não temos. Mudou o endereço? functions/_lib/home-en.js
+         (CAMINHO_EN) e o sitemap vêm junto; tests/home-en.test.mjs cobra. -->
+    <link rel="alternate" hreflang="pt-BR" href="https://sleevu.app/">
+    <link rel="alternate" hreflang="en" href="https://sleevu.app/en/">
+    <link rel="alternate" hreflang="x-default" href="https://sleevu.app/en/">
     <!-- Verificação do site no AdSense (só a posse do domínio: não carrega script nenhum). -->
     <meta name="google-adsense-account" content="ca-pub-0808280324005030">
     <meta property="og:site_name" content="Sleevu">

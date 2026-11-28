@@ -23,10 +23,27 @@ function desescapaXml(s) {
 // Uma entrada é a URL, ou { loc, lastmod } quando a página tem data de edição
 // confiável (os posts do blog). As geradas a cada build não levam lastmod: data
 // que muda sem o conteúdo mudar ensina o buscador a ignorar o campo.
+//
+// `alternates` ([{ hreflang, href }]) é o hreflang NO sitemap (2026-11-28, a home
+// e a home em inglês): cada URL do par lista as duas, ela mesma inclusive, como
+// o Google pede. Só entra o que tem a variante; o resto não muda.
 function linha(u) {
   if (typeof u === "string") return `  <url><loc>${escapaXml(u)}</loc></url>`;
   const data = u.lastmod ? `<lastmod>${escapaXml(u.lastmod)}</lastmod>` : "";
-  return `  <url><loc>${escapaXml(u.loc)}</loc>${data}</url>`;
+  const alternativas = (u.alternates || [])
+    .map((a) => `<xhtml:link rel="alternate" hreflang="${escapaXml(a.hreflang)}" href="${escapaXml(a.href)}"/>`).join("");
+  return `  <url><loc>${escapaXml(u.loc)}</loc>${data}${alternativas}</url>`;
+}
+const temAlternates = (urls) => urls.some((u) => typeof u !== "string" && u.alternates && u.alternates.length);
+
+// O par da home: (pt-BR) / e (en) /en/, com o inglês como x-default (o mesmo
+// desenho do <link rel="alternate"> do index.html; tests/home-en.test.mjs
+// confere os dois). `caminhoEn` é o CAMINHO_EN de functions/_lib/home-en.js.
+export function paresDaHome(origin, caminhoEn) {
+  const pt = `${origin}/`;
+  const en = `${origin}${caminhoEn}`;
+  const alternates = [{ hreflang: "pt-BR", href: pt }, { hreflang: "en", href: en }, { hreflang: "x-default", href: en }];
+  return [{ loc: pt, alternates }, { loc: en, alternates }];
 }
 
 // grupos: [[nomeDoArquivo, [entrada, ...]], ...], na ordem em que entram no
@@ -37,7 +54,8 @@ export function montaSitemaps(origin, grupos) {
   const arquivos = {};
   for (const [nome, urls] of cheios) {
     const linhas = urls.map(linha).join("\n");
-    arquivos[nome] = `${XML}<urlset ${NS}>\n${linhas}\n</urlset>\n`;
+    const xhtml = temAlternates(urls) ? ` xmlns:xhtml="http://www.w3.org/1999/xhtml"` : "";
+    arquivos[nome] = `${XML}<urlset ${NS}${xhtml}>\n${linhas}\n</urlset>\n`;
   }
   const filhos = cheios.map(([nome]) => `  <sitemap><loc>${escapaXml(`${origin}/${nome}`)}</loc></sitemap>`).join("\n");
   arquivos["sitemap.xml"] = `${XML}<sitemapindex ${NS}>\n${filhos}\n</sitemapindex>\n`;
