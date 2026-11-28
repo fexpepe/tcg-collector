@@ -17,6 +17,7 @@ errado, onde, o que fazer, o que não fazer e como saber que ficou pronto.
 - **Seção 4**: o que depende de decisão do Fernando e por isso não se executa.
 - **Seção 5**: o que foi olhado e não vale mexer.
 - **Seção 6**: registro de execução (pacote, branch, PR, estado).
+- **Fase 4** (seção 7, 28/11): as decisões da seção 4, pelo recomendado.
 
 ## 0. Regras de execução
 
@@ -809,6 +810,10 @@ navegador com o idioma em inglês, "1,000" no mínimo filtra por mil.
 Não se executam sem resposta. Cada uma muda o resultado que o visitante vê ou
 exige redirecionamento.
 
+**Respondidas em 28/11:** o Fernando pediu "seguir com o recomendado as
+decisões em aberto". A recomendação de cada uma e o pacote que a executa estão
+na seção 7 (Fase 4). D9 e D10 ficam como estão.
+
 | # | Decisão | Hoje | Alternativa |
 |---|---|---|---|
 | D1 | Teto do `shared.js` | **Decidido em 22/11:** subiu pra 86.528 B; a `main` está em 86.311 | Segue aberto tirar o `JP_NAME_ALIASES` do núcleo (1,8 KB), que resolve de vez |
@@ -914,4 +919,288 @@ O que a execução da Fase 3 mostrou e o plano não previa:
 - **3D.** O `parsePrice` do Explorar fica em ~259, não em ~194. Sobrou um caso
   do mesmo problema: Cartas grava no endereço (`?pmin=`) o texto como foi
   digitado, e um link feito em inglês lê outro número em português.
+
+## 7. Fase 4 — as decisões da seção 4, pelo recomendado (28/11)
+
+Em 28/11 o Fernando respondeu a seção 4 com "seguir com o recomendado as
+decisões em aberto". Nem o relatório nem este plano tinham escrito uma
+recomendação por decisão; ela está aqui, com o motivo, e é o que se executa.
+
+| # | Recomendado | Por quê | Pacote |
+|---|---|---|---|
+| D1 | Tirar o `JP_NAME_ALIASES` do núcleo: os apelidos vão pra carta quando o catálogo é gravado (a F3 do `docs/CATALOGO.md`) | O teto subiu de novo em 24/11 (86.784 B) e a `main` de 28/11 está em 100% dele. Sem isso, nenhum pacote que acrescenta código ao `shared.js` cabe, D2, D4 e D5 inclusive | 4A |
+| D2 | O preço brasileiro (MYP) só vence quando a moeda é real; em dólar e euro vale o mercado internacional, e o MYP convertido fica como reserva | Quem lê em dólar vê hoje um número que não é o do mercado americano e não bate com o texto da própria página, que a borda escreve com o dólar do TCGplayer | 4B |
+| D3 | Home em inglês num endereço próprio, `/en`, com `hreflang` nos dois, como os sets têm o `-en` | A busca em inglês mostra título e descrição em português, e o site já atende inglês e dólar | 4C |
+| D4 | Espanhol formata número e data pela região do navegador (`es-MX` 1,234.56; `es-AR` e `es-ES` 1.234,56) | É o costume de cada país, e o `Intl` já faz isso; o `parseMoney` segue o mesmo locale desde a #354 | 4D |
+| D5 | Português de Portugal com euro como moeda padrão; e-mail de entrada no idioma da interface | Português de Portugal em real é o único caso em que a moeda padrão não é a do país nem a do hobby. O e-mail em português pra quem se cadastrou em inglês parece spam | 4D (moeda) e 4E (e-mail) |
+| D6 | Uma regra só, a do contrato 3 do `docs/CATALOGO.md`: set sem logo próprio mostra o nome; o logo do jogo em todo set é exceção decidida jogo a jogo. Os outros dois textos passam a dizer isso, e o One Piece Carddass para de usar a arte da primeira carta | A regra 3 é a única que o Fernando decidiu; o `LOGOS.md` e o sync do Dragon Ball generalizaram sem decisão. A arte de carta como logo é o que a regra proíbe com todas as letras | 4F |
+| D7 | Set de nome em japonês ganha endereço pelo código mesmo quando sobram letras latinas no nome, com 301 do endereço antigo | A regra do código já vale desde 02/11 pro nome só em japonês; os nove casos são os que escaparam dela, e o 301 já existe (`scripts/data/sets-renomeados.json`) | 4G |
+| D8 | Aposentar o `svpj`, com de-para de id em `data/card-id-merges.json` | São as mesmas 217 cartas do `SV-P` em dois sets. O mecanismo de aposentar set importado com de-para já existe (`scripts/retire-imported-sets.mjs`) | 4H |
+| D8b, D8c | Corrigir os nomes de set na origem do dado (SV4a, WCS23) e tirar o espaço do fim (sm11, swsh4.5), com de-para do nome antigo | Erro de dado. O D8c mexe em chave de lista, de conquista e de perfil, por isso o de-para | 4I |
+| D9 | Fica como está | Os dois tins imprimem `BPT` (e os dois de Duelist Pack, `DPCT`), e o cartão mostra o código impresso (`code` do manifesto) nos dois; o id da carta e o endereço do set não mudaram na #353. Trocar agora mudaria de novo o destino dos links `?setId=` que estão no ar desde 22/11 | — |
+| D10 | Fica como aviso | Desde a #353 os oito syncs da TCGCSV separam o código sozinhos; o que sobra vem de dado de fonte que não controlamos (os dois casos do Pokémon japonês, que o 4I conserta). Como erro, um set escondido pararia o build diário de catálogo e preço | — |
+
+### 7.0 Regras da Fase 4
+
+Valem as da seção 0, com três mudanças:
+
+- **Orçamento.** O teto do `shared.js` é 86.784 B desde 24/11, e a `main` de
+  28/11 está a 100% dele. O 4A abre o espaço. Os pacotes que acrescentam código
+  ao núcleo (4B, 4D, 4E) nascem da branch do 4A, não da `main`, e cada um relata
+  o número antes e depois. Ninguém mexe no teto.
+- **PR aberta em paralelo.** A fexpepe/tcg-collector#386 (de outra sessão,
+  "cartas na tela sem esperar a rede") mexe no `shared.js`, `explore.js`,
+  `collection.js`, `dashboard.js` e `sw.js`. Não tocar nos mesmos trechos.
+- **Commit.** Termina com a linha `Co-Authored-By` do modelo que escreveu.
+
+Ordem: primeira leva 4A, 4C, 4G e 4I; segunda 4F e 4H; terceira, depois do 4A
+pronto, 4B, 4D e 4E.
+
+### 4A. Os apelidos em romaji saem do núcleo (D1)
+
+**Hoje.** `src/shared.js` ~7914: o `JP_NAME_ALIASES` (cerca de 1,8 KB
+comprimido) e o `jpNameAliases`, chamado pelo `cardSearchHaystack`. Toda carta
+cujo `name` ou `nameJp` tem kana ou kanji ganha no texto de busca o nome em
+romaji do personagem: "sasuke" acha うちはサスケ. Vale pra qualquer jogo, o
+Pokémon japonês incluído.
+
+**Fazer.**
+1. A tabela e a função mudam pra `scripts/lib/apelidos-jp.mjs`, sem mudar uma
+   entrada.
+2. O texto pronto vai pra carta no ponto em que o catálogo é gravado, num campo
+   novo e curto (`apelidos`, os termos separados por espaço), só nas cartas que
+   casam. Procure o escritor comum (`scripts/lib/sync-common.mjs`, o que grava
+   chunk e `cards.js`) em vez de mexer em sync por sync. Se não houver um ponto
+   que todos os jogos atravessem, PARE e relate quais escritores existem.
+3. O `cardSearchHaystack` passa a juntar `card.apelidos`; a tabela sai do
+   `shared.js`.
+4. O dado versionado de hoje ganha o campo já neste PR, sem rede (o mesmo
+   escritor, sobre os snapshots), senão a busca em romaji some entre o deploy e
+   o build completo seguinte. Prova: um script descartável que, pra cada carta
+   de cada catálogo, compara o `jpNameAliases` antigo com o campo novo, e dá
+   zero diferenças. O número de cartas com o campo e os bytes que o dado ganhou
+   vão na PR.
+5. Liste quem monta texto de busca fora do `cardSearchHaystack` (Busca global e
+   os arquivos de nomes, Explorar, scanner). Quem usava os apelidos tem de
+   continuar achando; quem nunca usou (a busca da borda, no D1, não tem a
+   coluna) fica como está e a PR diz isso.
+
+**Não fazer.** Mudar o teto, renomear campo existente, mexer na busca da borda.
+
+**Pronto quando.** "sasuke", "luffy" e "killua" acham a carta japonesa na tela
+do jogo e na Coleção (servidor local, porta 4361); o `check-size` mostra o
+espaço que abriu; teste novo trava a tabela no módulo novo e o campo no dado.
+
+### 4B. Preço na moeda de quem lê (D2)
+
+**Hoje.** `src/shared.js` `cardValue` (~1637): o MYP (`ref.b.md`) vence em
+qualquer moeda; depois o USD da impressão (`usdForVariant`), depois o EUR. O
+`pickPricingRef` (própria × base) ranqueia MYP > USD > EUR. O espelho do build
+é o `scripts/lib/pricing.mjs`, e o `setValueBuckets`
+(`scripts/lib/sync-common.mjs` ~218) soma o valor do set na mesma régua, em
+`vb`/`vu`/`ve`, que o `src/app.js` ~975 converte.
+`tests/pricing-variants.test.mjs` roda cliente e build lado a lado.
+
+**Fazer.**
+1. Em real, nada muda. Em dólar e euro: USD da impressão, depois EUR, depois
+   MYP convertido.
+2. O `pickPricingRef` segue a mesma ordem da moeda, no cliente e no build.
+3. O valor do set: o manifesto ganha a segunda soma (a da régua sem real) só
+   nos sets em que ela difere da primeira, pra não engordar os outros. O
+   `app.js` escolhe a soma pela moeda. Sem a soma nova no manifesto (o build
+   rápido não refaz manifesto), cai na de hoje.
+4. Teste: carta com MYP e USD, só MYP, só USD, só EUR, nas três moedas; o valor
+   do set igual à soma do `cardValue` das cartas, nas três.
+
+**Atenção.** O Portfólio de quem usa dólar ou euro vai dar um degrau no dia do
+deploy (o patrimônio passa a vir de outra fonte). A PR diz isso. O texto da
+borda (`functions/_lib/pagina-carta.js`, `precoUSD`) já é o dólar: depois deste
+pacote, página e app dizem o mesmo número pra quem lê em dólar.
+
+**Base.** A branch do 4A. **Pronto quando** a tela de set e a carta mostram, em
+dólar, o mesmo valor da TCGplayer que a borda escreve (servidor local, porta
+4362).
+
+### 4C. Home em inglês num endereço próprio (D3)
+
+**Hoje.** `index.html`: título, descrição, Open Graph e canonical
+(`https://sleevu.app/`) em português, sem `hreflang`. O robô do Google fica no
+idioma do HTML (`src/theme.js` ~249). Os sets têm a variante `-en`
+(`functions/_lib/pagina-set.js` ~195, `scripts/prerender-catalog.mjs` ~332),
+que é também o `x-default`.
+
+**Fazer.**
+1. `/en` serve a mesma home com `<html lang="en">`, título, descrição, Open
+   Graph e canonical em inglês, e os textos visíveis que têm `data-i18n` já em
+   inglês no HTML (o robô sem JS lê inglês). Siga o desenho do
+   `functions/_lib/decora-app.js`: funções puras testáveis em Node e a cola do
+   `HTMLRewriter` mínima.
+2. O texto em inglês sai das chaves do `src/i18n.js`, sem cópia à mão sem
+   trava: ou um passo de build gera o que a borda lê, ou um teste compara a
+   cópia com o `i18n.js`.
+3. `/` e `/en` levam o trio `hreflang` (pt-BR → `/`, en → `/en`, x-default →
+   `/en`, como nos sets), e o `/en` entra no sitemap com os alternates.
+4. Quem chega em `/en` sem escolha salva de idioma abre o app em inglês; quem
+   já escolheu, continua na escolha (é a regra do app).
+5. Confira o `sw.js` (navegação de `/en` não pode receber a home em português
+   guardada), o `_redirects` e o `_headers`.
+
+**Não fazer.** Variante em espanhol (os sets também não têm), mudar a home em
+português, mexer no `shared.js`.
+
+**Pronto quando.** Teste das funções puras; a home `/en` renderizada em 1280 e
+390 px pelo ensaio local da borda (servidor Node fora do repo, porta 4363); o
+HTML de `/en` sem JS só com inglês nos textos visíveis. O que só a borda de
+produção prova vai na PR com a receita (`curl` com user-agent do Googlebot).
+
+### 4D. Número pela região, e euro pra Portugal (D4 e a moeda do D5)
+
+**Hoje.** `src/shared.js` ~1398: `UI_LANGUAGES` com o locale fixo `es-ES` pro
+espanhol; ~1462: sem escolha salva, a moeda é real em português e dólar no
+resto. O `MONEY_DEC` (~5685) e o `parseMoney` saem do `getLocale()`.
+
+**Fazer.**
+1. Espanhol: o locale de formato vem da região do navegador (o primeiro de
+   `navigator.languages` que começa com `es-`); `es` sozinho e `es-ES` seguem
+   `es-ES`. Data e número seguem juntos.
+2. Português de Portugal (`pt-PT`) sem escolha salva: moeda padrão euro. O
+   texto continua o português do site. Os outros `pt` seguem em real.
+3. Testes: o locale e a moeda padrão pra `es-MX`, `es-AR`, `es`, `es-ES`,
+   `pt-PT`, `pt-BR`, `pt` e `en-US`; em `es-MX`, digitar `1,250` grava 1250 e
+   o valor sai `1,250.00` (a mesma régua da #354).
+
+**Base.** A branch do 4A. Porta 4364.
+
+### 4E. E-mail de entrada no idioma da interface (o e-mail do D5)
+
+**Hoje.** `sendMagicLink` (`src/shared.js` ~10955) manda
+`POST /auth/v1/otp` com `{ email, create_user: true }`. O modelo do e-mail está
+em `supabase/email-templates/magic-link.html`, só em português, e o Fernando o
+cola no painel do Supabase (Magic Link e Confirm signup; o passo a passo está no
+`README.md` da pasta).
+
+**Fazer.**
+1. Antes de escrever código, confirme na documentação do Supabase: quais
+   variáveis os modelos de e-mail enxergam (o `.Data` com o `user_metadata`),
+   se o assunto aceita variável e condição, e se o `data` do `/otp` grava
+   metadado pra quem já tem conta (a documentação diz que só na criação). Se o
+   `.Data` não existir no modelo de Magic Link, PARE e relate.
+2. O pedido do link manda `data: { lang }`. Com a sessão aberta, se o
+   `user_metadata.lang` não for o idioma da interface, grava (uma vez), e grava
+   de novo quando a pessoa troca de idioma logada.
+3. Um modelo só, com condição em `.Data.lang` (en, es, e português no resto),
+   em `supabase/email-templates/`, e o `README.md` diz o que colar onde. Colar
+   no painel é do Fernando: a PR traz o link do arquivo na branch e o caminho
+   no disco.
+
+**Base.** A branch do 4A.
+
+### 4F. Logo do set vintage: uma regra só (D6)
+
+**Hoje.** Contrato 3 do `docs/CATALOGO.md` (~52): set sem logo mostra o nome;
+exceção decidida pelo Fernando, jogo a jogo, pros vintage cujo logo do jogo é a
+marca impressa. `docs/LOGOS.md` (~52) e `scripts/sync-dbc-carddass.mjs` (~76)
+dizem que todo vintage leva o logo do jogo. No dado de 28/11 levam o logo do
+jogo: as linhas do Naruto, LOTR, WoW, DBZ CCG, Dragon Ball Carddass (dbc, dbsb,
+dbva, dbbw), HxH, Miracle Battle, Fullmetal Alchemist e Carddass Masters (logo
+por IP). Mostram o nome: Gundam War, Gundam Carddass e as três linhas de Saint
+Seiya. O One Piece Carddass usa a imagem da primeira carta
+(`scripts/sync-onepiece-vintage.mjs` ~198), que o contrato 3 proíbe.
+
+**Fazer.**
+1. O contrato 3 lista os jogos da exceção como estão no dado (confira cada um
+   no `data/<jogo>/cards.js`).
+2. `docs/LOGOS.md` e o comentário do `sync-dbc-carddass.mjs` passam a apontar
+   pra exceção do contrato 3, sem dizer "todo vintage".
+3. One Piece Carddass: `setLogo: ""`. Procure o mesmo padrão (imagem de carta
+   virando `setLogo`) nos outros syncs, o `sync-onepiece-2002.mjs` inclusive.
+4. O `scripts/lint-catalog.mjs` passa a reprovar `setLogo` que é imagem de
+   carta.
+5. O dado versionado do One Piece regenera sem rede no próprio PR.
+
+**Não fazer.** Pôr logo do jogo em Gundam War, Gundam Carddass ou Saint Seiya:
+seria exceção nova, e exceção é decisão do Fernando.
+
+**Pronto quando.** A tela de Sets do One Piece e a página Vintage mostram os
+sets do Carddass com o nome, em 1280 e 390 px, tema claro e escuro (porta 4365).
+
+### 4G. Endereço de set pelo código quando o nome é japonês (D7)
+
+**Hoje.** O endereço do set sai do nome (`slugify`). Desde 02/11, nome só em
+japonês usa o `setId` (comentário em `scripts/lib/sets-renomeados.mjs`). Nome
+em japonês com algumas letras latinas escapa da regra e vira o que sobra:
+`30-db`, `29-4`, `16-z`, `12-3`, `9-vs` e `6-vs` no Dragon Ball Carddass,
+`10-vs` no Gundam (confira se é o `gcd` ou o `gw`), `2000` a `2002` no HxH e
+`naruto` no Carddass Masters.
+
+**Fazer.**
+1. Ache onde o endereço do set é escolhido (prerender e borda têm de
+   concordar) e estenda a regra: nome com kana ou kanji usa o `setId`.
+2. Antes de mexer, gere a lista de TODOS os endereços de set que mudariam, em
+   todos os jogos. Se aparecer algum fora da lista acima, PARE e relate.
+3. Cada endereço antigo entra em `scripts/data/sets-renomeados.json` (`games`:
+   slug antigo → `setId`), e o 301 vale pra página do set e das cartas abaixo.
+4. Teste que trava a regra e os 301.
+
+**Pronto quando.** No ensaio local da borda, `/games/dbc/30-db` e uma carta
+abaixo dele respondem 301 pro endereço novo (porta 4366).
+
+### 4H. Pokémon japonês: aposentar o `svpj` (D8)
+
+**Hoje.** `scripts/sync-ppt.mjs` ~223: `JP_IMPORT_SETS` importa da
+PokemonPriceTracker o `svpj` (`ppt: 23779`), que repete as 217 cartas do `SV-P`.
+
+**Fazer.**
+1. Parear carta a carta `svpj` → `SV-P` (pelo número). Carta sem par: PARE e
+   relate.
+2. O preço que vinha pelo `svpj` (ppt 23779) passa a cair no `SV-P`; imagem que
+   só o `svpj` tinha vai pelo `images` do de-para. Nenhuma carta do `SV-P` pode
+   perder preço nem imagem: compare antes e depois.
+3. Aposentar pelo mecanismo que existe (`scripts/retire-imported-sets.mjs`,
+   `scripts/lib/set-supersede.mjs`, `data/card-id-merges.json`). Ache como o
+   cliente aplica o de-para na coleção, desejos, decks, fichários e listas, e
+   relate o que acontece com quem tem a mesma carta nos dois sets (soma? fica
+   a maior?). Se somar, PARE antes de commitar e relate.
+4. O dado versionado regenera sem rede no PR.
+
+**Pronto quando.** Uma coleção semeada com cartas do `svpj` abre com as cartas
+do `SV-P` marcadas (servidor local, porta 4367), e o `svpj` some da tela de
+Sets do Pokémon japonês.
+
+### 4I. Nomes de set do Pokémon (D8b e D8c)
+
+**Hoje.** O lint do build de 28/11 avisa: `ja|SV4a` com 2 nomes (320 cartas
+"シャイニートレジャーex" e 40 "レイジングサーフ", que é o SV3a) e `ja|WCS23`
+com um nome em inglês e um em japonês. E dois nomes em português com espaço no
+fim, vindos da TCGdex (`scripts/sync-tcgdex.mjs` ~179 e ~392): "Sintonia
+Mental " (`sm11`, 258 cartas) e "Destinos Brilhantes " (`swsh4.5`, 195).
+
+**Fazer.**
+1. Achar a fonte de cada nome trocado (`scripts/lib/tcgcsv-pokemon.mjs`,
+   `scripts/sync-bulbapedia-ja.mjs`, `scripts/sync-ppt.mjs` são os candidatos)
+   e corrigir lá, não no dado.
+2. `trim` no nome de set do `sync-tcgdex.mjs`. Nome de set é chave de lista, de
+   conquista e do perfil público: o nome antigo tem de continuar achando o set
+   (o de-para de set renomeado, `scripts/data/sets-renomeados.json` e
+   `data/sets-renomeados-auto.json`). Ache como o cliente resolve nome antigo e
+   relate se alguma dessas três telas não passa por ele.
+3. O dado versionado regenera sem rede no PR, e o `lint-catalog` fica sem
+   nenhum aviso de `setId` com dois nomes.
+
+**Pronto quando.** Lint sem os dois avisos; a tela de Sets do Pokémon em
+português mostra "Sintonia Mental" e "Destinos Brilhantes" (porta 4368).
+
+### 7.1 Registro da Fase 4
+
+| Pacote | Decisão | Branch | PR | Estado |
+|---|---|---|---|---|
+| 4A | D1 | | | |
+| 4B | D2 | | | |
+| 4C | D3 | | | |
+| 4D | D4, D5 (moeda) | | | |
+| 4E | D5 (e-mail) | | | |
+| 4F | D6 | | | |
+| 4G | D7 | | | |
+| 4H | D8 | | | |
+| 4I | D8b, D8c | | | |
 
