@@ -29,6 +29,9 @@ import { readGlobalVar, readSnapshot, writeSnapshot, snapshotCardCount, writeGam
 import { PAGES, estreias, estreiasForaDaFaixa, dataDoSet, PROMO_MISSION, parsePromoMission, PROMO_CARD_BATTLE, CLEAR_MISSION } from "./lib/naruto-datacarddass.mjs";
 import { aplicaRaridade } from "./naruto-raridade-hinokunian.mjs";
 const SNAP_RARIDADE = new URL("../data/vintage/naruto-raridade.json", import.meta.url);
+// Lista do Card Battle 第1〜4弾 do blog do hash1ag (naruto-raridade-ameblo.mjs):
+// aplicada depois do hinokunian, manda nos DN-001–107.
+const SNAP_RARIDADE_CB = new URL("../data/vintage/naruto-raridade-ameblo.json", import.meta.url);
 
 const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/naruto/", ROOT);
@@ -185,9 +188,17 @@ async function run() {
     }
   }
   // Raridade (N/R/SR/UR) do snapshot do hinokunian — só o Card Battle 第一〜四弾
-  // (DN-001–107) tem página lá; o resto do DN e a Mission ficam sem.
+  // (DN-001–107) tem página lá; o resto do DN e a Mission ficam sem. A lista
+  // do Ameblo, logo abaixo, corrige esses mesmos 107.
   const rar = aplicaRaridade(line, await readSnapshot(SNAP_RARIDADE), { nomeDe: (c) => c.name });
   console.log(`  raridade: ${rar.aplicadas} cartas (hinokunian); ${rar.nomeDiferente} com nome diferente ficaram sem.`);
+  // Por cima, a lista do blog (2026-11-27): as páginas do hinokunian relistam
+  // os 弾 anteriores e se contradizem (DN-025, DN-053, DN-067), e o
+  // aplicaRaridade fica com a primeira; o porquê está no script da lista.
+  // Carta que a lista não cobre ou com nome diferente segue com a do
+  // hinokunian.
+  const rarCb = aplicaRaridade(line, await readSnapshot(SNAP_RARIDADE_CB), { nomeDe: (c) => c.name });
+  console.log(`  raridade: ${rarCb.aplicadas} cartas do Card Battle 第1〜4弾 pela lista do Ameblo; ${rarCb.nomeDiferente} com nome diferente ficaram com a do hinokunian.`);
 
   // Promos da Mission, na ordem da lista oficial. Raridade "P", como as
   // promos da Formation e do Cross ("プロモ" do Suruga-ya vira a sigla).
