@@ -10823,10 +10823,13 @@
     const domain = sharedCookieDomain();
     if (s) {
       // Enxuga o user (só id+email são usados) pra o cookie caber com folga.
+      // `lang` é o idioma que o Supabase tem guardado pra esta conta (o e-mail
+      // de entrada sai nele): fica aqui pra saber, sem pedido nenhum, se já
+      // bate com o da interface (ver gravaIdiomaDoEmail).
       const trimmed = {
         access_token: s.access_token,
         refresh_token: s.refresh_token,
-        user: s.user ? { id: s.user.id, email: s.user.email } : s.user,
+        user: s.user ? { id: s.user.id, email: s.user.email, lang: (s.user.user_metadata || s.user).lang } : s.user,
         ts: s.ts || Date.now()
       };
       if (domain) {
@@ -10913,7 +10916,11 @@
     // o token vai em gotrue_meta_security e o Supabase valida no siteverify.
     // Sem token (widget bloqueado/omitido), o campo fica de fora — funciona
     // enquanto a proteção estiver desligada e falha explícito quando ligada.
-    const body = Object.assign({ email, create_user: true }, pkce);
+    // `data.lang` (só o código do idioma, nada mais) vira user_metadata na
+    // CRIAÇÃO da conta e é o que o modelo do e-mail lê pra escolher o texto
+    // (supabase/email-templates). Pra quem já tem conta o GoTrue ignora o
+    // `data` do /otp — nesses casos o idioma vai pelo gravaIdiomaDoEmail.
+    const body = Object.assign({ email, create_user: true, data: { lang: currentLanguage } }, pkce);
     if (captchaToken) body.gotrue_meta_security = { captcha_token: captchaToken };
     const res = await fetch(`${SUPABASE_URL}/auth/v1/otp?redirect_to=${encodeURIComponent(redirect)}`, {
       method: "POST", headers: authHeaders(), body: JSON.stringify(body)
@@ -10954,6 +10961,26 @@
       if (valor) url += `&${encodeURIComponent(chave)}=${encodeURIComponent(valor)}`;
     });
     window.location.href = url;
+  }
+  // O e-mail de entrada sai no idioma da interface (2026-11-28). O modelo do
+  // Supabase lê `user_metadata.lang`, e o `data` do /otp só grava na criação da
+  // conta — quem já existe (e quem entrou pelo Google) precisa gravar por aqui,
+  // com a sessão aberta. Só pede quando o idioma guardado NÃO bate com o da
+  // interface (`user.lang`, que o setSession mantém na sessão, vem do próprio
+  // Supabase), então não é um pedido por página: é um por conta nova e um por
+  // troca de idioma — o setLanguage recarrega, e a página seguinte vê a
+  // diferença. Uma tentativa por aba e idioma (sessionStorage): sem rede ou com
+  // token vencido não vira um laço. PUT /user mescla o `data`, o nome vindo do
+  // Google não se perde, e não manda e-mail nenhum.
+  function gravaIdiomaDoEmail(s) {
+    const k = "sleevu-lang-email";
+    try { if (sessionStorage.getItem(k) === currentLanguage) return; sessionStorage.setItem(k, currentLanguage); } catch (e) { /* sem storage: tenta */ }
+    fetch(`${SUPABASE_URL}/auth/v1/user`, {
+      method: "PUT", headers: authHeaders(s.access_token), body: JSON.stringify({ data: { lang: currentLanguage } })
+    }).then((r) => {
+      const n = r.ok && getSession();
+      if (n && n.user && n.user.id === s.user.id) { n.user.lang = currentLanguage; setSession(n); }
+    }).catch(() => { /* a próxima aba tenta de novo */ });
   }
   async function fetchAuthUser(token) {
     try { const r = await fetch(`${SUPABASE_URL}/auth/v1/user`, { headers: authHeaders(token) }); return r.ok ? r.json() : null; } catch (e) { return null; }
@@ -12767,6 +12794,7 @@
       if (Date.now() - (session.ts || 0) > 50 * 60 * 1000) session = await refreshSession() || session;
       if (!getSession()) { renderLoggedOut(); return; }
       renderLoggedIn(session);
+      if (session.user.lang !== currentLanguage) gravaIdiomaDoEmail(session);
       const uid = session.user.id;
       let changed = false;
       const aSubir = {};

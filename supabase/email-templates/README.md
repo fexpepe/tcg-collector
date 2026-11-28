@@ -44,7 +44,37 @@ upgrade do Resend, subir aqui junto).
 - **Magic Link** (logins seguintes)
 - **Confirm signup** (primeiro login de um e-mail novo)
 
-Assunto dos dois: `Seu link de entrada — Sleevu`
+Assunto dos dois (uma linha só, colada inteira no campo **Subject**):
+
+```
+{{ with .Data }}{{ if eq (printf "%v" .lang) "en" }}Your sign-in link — Sleevu{{ else if eq (printf "%v" .lang) "es" }}Tu enlace de acceso — Sleevu{{ else }}Seu link de entrada — Sleevu{{ end }}{{ else }}Seu link de entrada — Sleevu{{ end }}
+```
+
+Se o painel recusar a condição no assunto, deixe o assunto fixo
+`Seu link de entrada — Sleevu` (o corpo continua no idioma certo).
+
+### Como o idioma chega ao e-mail
+
+O modelo é um só, nos três idiomas. Ele lê `.Data.lang`, que é o
+`user_metadata.lang` da conta (documentação do Supabase: `.Data` "contains
+metadata from `auth.users.user_metadata`"). `en` e `es` têm o texto no próprio
+modelo; qualquer outra coisa (conta sem o campo, valor estranho) cai em
+português. O código do idioma é só condição, nunca aparece no e-mail.
+
+Quem grava o `lang`:
+
+- **Conta nova:** o pedido do link manda `data: { lang }` no `POST /auth/v1/otp`,
+  e o Supabase grava na criação. É o e-mail do **Confirm signup**.
+- **Conta que já existe** (e quem entrou pelo Google): o Supabase **ignora** o
+  `data` do `/otp` pra conta confirmada. O site grava com a sessão aberta
+  (`PUT /auth/v1/user`) na primeira página depois do deploy e a cada troca de
+  idioma, só quando o idioma guardado difere do da interface. É o e-mail do
+  **Magic Link**. Até a pessoa abrir o site logada uma vez, o e-mail dela sai em
+  português (o padrão).
+
+A ordem não importa: o site pode ir ao ar antes de o modelo novo ser colado (o
+modelo antigo ignora o `lang`), e o e-mail só muda de idioma quando o modelo
+novo entrar no painel.
 
 ## 4. Enquanto estiver no painel: Turnstile
 
