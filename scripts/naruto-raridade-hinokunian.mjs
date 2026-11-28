@@ -4,6 +4,9 @@
 // robots.txt) tem uma página por volume com a raridade na 1ª célula da linha:
 //   - NARUTO カードゲーム 巻ノ壱–巻ノ十五 (cardgamemakino1–15.html);
 //   - ナルティメットカードバトル 第一〜四弾 (cardbattle1–4.html), DN-001T–107T.
+//     Desde 2026-11-27 a lista do Ameblo (naruto-raridade-ameblo.mjs) é
+//     aplicada por cima: estas páginas relistam os 弾 anteriores com raridade
+//     trocada (DN-025, DN-053, DN-067) e erram DN-026 e DN-062.
 // Os 巻ノ十六/十七, o resto do Card Battle e a Mission não têm página.
 //
 // Desde 2026-11-13 lê também os 14 produtos FORA dos boosters (starters,
