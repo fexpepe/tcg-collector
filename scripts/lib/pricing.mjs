@@ -151,15 +151,24 @@ export function usdForVariant(ref, variant) {
 }
 
 // Entre a entrada PRÓPRIA de uma carta localizada (-pt/-ja/-zh) e a da carta
-// BASE (EN), qual vale: a de melhor fonte — BR (MYP) > USD (TCGplayer) > EUR
-// (Cardmarket). Antes valia "a própria, se existir": a carta PT do Van Gogh
-// Pikachu tinha só o EUR do Cardmarket e a EN tinha o USD do TCGplayer, e a
-// mesma impressão aparecia com dois valores diferentes conforme a bandeira.
-// Uma carta JP com USD próprio (mercado JP) continua vencendo a base EN.
-export function pickPricingRef(own, base) {
+// BASE (EN), qual vale: a de melhor fonte. Antes valia "a própria, se
+// existir": a carta PT do Van Gogh Pikachu tinha só o EUR do Cardmarket e a EN
+// tinha o USD do TCGplayer, e a mesma impressão aparecia com dois valores
+// diferentes conforme a bandeira. Uma carta JP com USD próprio (mercado JP)
+// continua vencendo a base EN.
+//
+// A ordem das fontes segue a MOEDA de quem lê (2026-11-28, decisão D2 do plano
+// de revisão): em real, BR (MYP) > USD (TCGplayer) > EUR (Cardmarket); em dólar
+// e euro, USD > EUR > BR — o MYP convertido vira reserva, e o número bate com o
+// texto que a borda escreve na página da carta (o dólar do TCGplayer).
+// `brPrimeiro` = a moeda é real. É a MESMA régua do cardValue (shared.js).
+export function pickPricingRef(own, base, brPrimeiro = true) {
   if (!own) return base || null;
   if (!base || own === base) return own;
-  const rank = (r) => (r.b && r.b.md > 0 ? 3 : (r.u > 0 ? 2 : (r.e > 0 ? 1 : 0)));
+  const rank = (r) => {
+    const b = r.b && r.b.md > 0, u = r.u > 0, e = r.e > 0;
+    return brPrimeiro ? (b ? 3 : u ? 2 : e ? 1 : 0) : (u ? 3 : e ? 2 : b ? 1 : 0);
+  };
   return rank(base) > rank(own) ? base : own;
 }
 

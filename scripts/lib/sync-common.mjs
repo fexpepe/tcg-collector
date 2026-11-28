@@ -187,8 +187,9 @@ export async function writeSplitIndexes(outDirUrl, idx, { only } = {}) {
 //
 // O valor vai SEPARADO POR MOEDA DE ORIGEM (vb=BRL/MYP, vu=USD, ve=EUR) porque
 // é assim que o cliente converte: cada carta escolhe sua fonte pela MESMA
-// precedência do cardValue (BR > USD > EUR) e o câmbio entra depois, na moeda
-// que a pessoa escolheu. `vn` = quantas cartas do set ficaram sem preço nenhum.
+// precedência do cardValue (BR > USD > EUR em real; USD > EUR > BR em dólar e
+// euro, no `vx` — ver setValueBuckets) e o câmbio entra depois, na moeda que a
+// pessoa escolheu. `vn` = quantas cartas do set ficaram sem preço nenhum.
 export const basePricingId = (id) => String(id || "").replace(/-(pt|ja|zh-cn|zh-tw|zh)$/, "");
 
 // ── Número de carta: chave de casamento e número que vai no ID ───────────────
@@ -216,19 +217,28 @@ export function numDoId(s) {
   return String(s || "").split("/")[0].trim().replace(/^(\D*)0+(\d)/, "$1$2");
 }
 
-export function setValueBuckets(cards, pricing) {
-  const table = pricing || {};
+// A soma sai em DUAS réguas, porque a ordem das fontes do cardValue segue a
+// moeda de quem lê (2026-11-28, D2): em real vale BR (MYP) > USD > EUR (é o
+// vb/vu/ve de sempre); em dólar e euro vale USD > EUR > BR, e essa segunda soma
+// vai em `vx` — só no set em que ela DIFERE da primeira, e isso só acontece
+// quando alguma carta do set tem preço MYP (sem `b` as duas réguas dão o mesmo
+// número). Sem MYP no catálogo (o estado de produção hoje) nenhum set ganha
+// byte. O cliente (src/app.js#entryRefValue) usa `vx` fora do real e, sem ele
+// (manifest velho, ou set igual nas duas), cai nos vb/vu/ve de hoje.
+function somaDoSet(cards, table, brPrimeiro) {
   let vb = 0, vu = 0, ve = 0, vn = 0;
   for (const card of cards) {
     // Mesma régua do cardValue (lib/pricing.mjs): própria × base pela melhor
     // fonte, e o USD da impressão padrão da carta (v) antes do principal (u).
-    const ref = pickPricingRef(table[card.id], table[basePricingId(card.id)]);
+    const ref = pickPricingRef(table[card.id], table[basePricingId(card.id)], brPrimeiro);
     if (!ref) { vn++; continue; }
     const variant = (card.variants && card.variants[0]) || "Normal";
     const usd = usdForVariant(ref, variant);
-    if (ref.b && ref.b.md > 0) vb += ref.b.md;
+    const myp = ref.b && ref.b.md > 0 ? ref.b.md : 0;
+    if (brPrimeiro && myp) vb += myp;
     else if (usd > 0) vu += usd;
     else if (ref.e > 0) ve += ref.e;
+    else if (myp) vb += myp;
     else vn++;
   }
   const round = (n) => Math.round(n * 100) / 100;
@@ -237,6 +247,17 @@ export function setValueBuckets(cards, pricing) {
   if (vu) out.vu = round(vu);
   if (ve) out.ve = round(ve);
   if (vn) out.vn = vn;
+  return out;
+}
+
+export function setValueBuckets(cards, pricing) {
+  const table = pricing || {};
+  const out = somaDoSet(cards, table, true);
+  // `vn` (cartas sem preço nenhum) é o mesmo nas duas réguas: carta com alguma
+  // fonte entra numa das somas em ambas.
+  const alt = somaDoSet(cards, table, false);
+  const { vn, ...soma } = alt;
+  if (soma.vb !== out.vb || soma.vu !== out.vu || soma.ve !== out.ve) out.vx = soma;
   return out;
 }
 

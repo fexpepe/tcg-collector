@@ -233,7 +233,8 @@ PokemonPriceTracker (preços JP e graded, por crédito) e AwesomeAPI (câmbio).
 
 **MYP (Brasil) — pendente do token.** `scripts/sync-myp.mjs` já lê
 `MYP_API_TOKEN` e pagina `/{jogo}/precos`; o front já lê `TCG_PRICING.b` e mostra
-a linha "Brasil · MYP", com o BR tendo prioridade no valor. O passo do deploy é
+a linha "Brasil · MYP", com o BR tendo prioridade no valor em real (em dólar e
+euro vale o mercado internacional e o MYP é reserva, desde 28/11/2026). O passo do deploy é
 no-op enquanto o secret não existir. O que falta está no [ROADMAP](../ROADMAP.md).
 
 ---
