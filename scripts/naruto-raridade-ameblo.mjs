@@ -16,7 +16,11 @@
 //
 // A lista oficial da Bandai (carddas.com, no Wayback) não traz raridade, e o
 // GIF oficial da carta não mostra o brilho, então não há fonte de primeira
-// mão pra desempatar.
+// mão pra desempatar. Mas o próprio hinokunian se desmente: cada página abre
+// com um quadro de quantas cartas há de cada raridade, e as linhas dele não
+// fecham com o quadro justo onde o blog discorda — o 第二弾 diz SR 6 e R 12
+// e as linhas dão 5 e 13 (a DN-053 é a SR que falta); o 第三弾 diz R 12 e
+// N 22 e as linhas dão 11 e 23 (a DN-026, relistada ali, é a R).
 //
 // Vocabulário → sigla do catálogo, a mesma escada que o hinokunian já usava
 // pra essas cartas (SR = 激レア e UR = 爆レア nas 18 em que os dois falam):
