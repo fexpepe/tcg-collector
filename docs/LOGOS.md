@@ -49,10 +49,13 @@ caixas têm limite.
 | Set | vitrine do topo (o set mais novo) | 385×156 | 300×96 |
 | Símbolo | tela de sets e Coleção (`.set-symbol`) | 34×34 | 34×34 |
 
-O logo de jogo vintage também vira `setLogo` dos sets do jogo (regra 3 do
-CATALOGO), mas o "Sobre" já é o maior desses lugares. A vitrine do topo
-mostra o set mais novo, que é justamente o do logo que acabou de entrar.
-Por isso ela conta pro set, e não só como ideal.
+Nos jogos vintage da exceção do contrato 3 do CATALOGO (a lista está lá), o
+logo do jogo também vira `setLogo` dos sets, e o "Sobre" já é o maior desses
+lugares. Nos outros vintage (Gundam War, Gundam Carddass, Saint Seiya, One
+Piece Carddass) o set sem logo próprio mostra o nome: logo do jogo em todo
+set é decisão do Fernando, jogo a jogo. A vitrine do topo mostra o set mais
+novo, que é justamente o do logo que acabou de entrar. Por isso ela conta
+pro set, e não só como ideal.
 
 ## O padrão
 

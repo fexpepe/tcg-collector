@@ -181,7 +181,10 @@ async function run() {
         language: "ja", // produto japonês (1999–2002)
         image: cardImage(c.num),
         variants: ["Normal"],
-        setLogo: "", // arte da 1ª carta do set (abaixo) — o wiki não tem logo limpo
+        // Vazio: o wiki não tem logo limpo de set, e a tela mostra o NOME.
+        // Até 2026-11-28 isto virava a imagem da 1ª carta do set, que o
+        // contrato 3 do docs/CATALOGO.md proíbe (e o lint-catalog reprova).
+        setLogo: "",
         opColor: null,
         cardType: c.type || null,
         cost: null,
@@ -193,10 +196,6 @@ async function run() {
   }
   const localImgs = vintage.filter((c) => !c.image.startsWith("http")).length;
   console.log(`  build do snapshot: ${vintage.length} cartas em ${snap.sets.length} sets (${localImgs} com imagem local espelhada).`);
-
-  const cover = {};
-  for (const c of vintage) { if (!cover[c.setId]) cover[c.setId] = c.image; }
-  for (const c of vintage) { c.setLogo = cover[c.setId]; }
 
   // Anexa ao catálogo moderno (TCGCSV). Dedupe por id.
   const modern = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];

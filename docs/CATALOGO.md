@@ -50,12 +50,27 @@ que ordem e como saber que terminou**.
    quando **não regride** (menos cartas é suspeito, e fica o anterior). Set
    aposentado deixa as cartas sem par congeladas, com `retired`.
 3. **Dado que falta não se inventa.** Set sem logo próprio fica com
-   `setLogo: ""` e a tela mostra o **nome** (sem arte da primeira carta, sem
-   logo genérico do jogo). Exceção decidida pelo Fernando, jogo a jogo: os
-   vintage em que nenhum set tem logo e o logo do jogo é a marca impressa
-   (linhas do Naruto; LOTR e WoW desde 2026-10-27; DBZ CCG desde 2026-11-02)
-   levam o `game_<slug>.webp` em
-   todo set, e o nome segue embaixo do tile. Carta sem preço fica sem preço. Nome traduzido só
+   `setLogo: ""` e a tela mostra o **nome** (sem arte de carta, sem logo
+   genérico do jogo). Imagem de carta como `setLogo` é proibida, e o
+   `lint-catalog` reprova (era o que o One Piece Carddass fazia até
+   2026-11-28). Exceção decidida pelo Fernando, jogo a jogo: os vintage em que
+   nenhum set tem logo e o logo do jogo é a marca impressa levam o
+   `game_<slug>.webp` em todo set, e o nome segue embaixo do tile. Os jogos da
+   exceção, como estão no dado em 2026-11-28 (LOTR e WoW desde 2026-10-27; DBZ
+   CCG desde 2026-11-02):
+   - Naruto: `naruto` (cada linha com o logo da linha; os 7 sets do Narutimate
+     Mission não têm logo e mostram o nome), `narutotc`, e os jogos de um set só
+     `narutoboruto` e `narutocg`;
+   - Dragon Ball: `dbc`, `dbsb`, `dbva`, `dbbw` (o logo do jogo de cada uma) e
+     `dbz`;
+   - `lotr`, `wow`, `hxh`, `mbc` e `fma`;
+   - `cdm` (Carddass Masters): o logo é o da franquia (`set_cdm_<ip>.webp`),
+     igual em todos os sets dela.
+
+   Mostram o nome, e só viram exceção por decisão nova: One Piece Carddass
+   (`opcd-`) e 2002 (`op2002-`), Gundam War (`gw`), Gundam Carddass (`gcd`) e as
+   três linhas de Saint Seiya (`seiya`, `seiyatc`, `seiyacr`). Carta sem preço
+   fica sem preço. Nome traduzido só
    com fonte citada, e marcado quando a tradução é nossa (os títulos de cena do
    Naruto). Set fan-made fica fora do catálogo (`skip: true` no snapshot, como o
    "Set 29" do Naruto CCG).

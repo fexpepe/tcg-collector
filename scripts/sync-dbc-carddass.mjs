@@ -73,9 +73,11 @@ const ID_PREFIX = "dbc-";
 // coleção de quem marcou; MUDOU_DE_JOGO no lint). O sync segue um só, porque
 // as fontes são as mesmas, e grava os quatro catálogos.
 export const JOGO_DA_SERIE = { h: "dbc", sb: "dbsb", va: "dbva", bw: "dbbw" };
-// Logo do jogo vira o setLogo dos sets, como em todo vintage (regra 3 do
-// CATALOGO). Os três novos ficaram sem logo de 13 a 14/11/2026 (o cartão do
-// set mostrava o nome); os logos chegaram em 14/11, enviados pelo Fernando.
+// Logo do jogo vira o setLogo dos sets porque o Dragon Ball Carddass está na
+// lista de exceções do contrato 3 do docs/CATALOGO.md (exceção decidida pelo
+// Fernando, jogo a jogo: não é regra de "todo vintage"). Os três novos ficaram
+// sem logo de 13 a 14/11/2026 (o cartão do set mostrava o nome); os logos
+// chegaram em 14/11, enviados pelo Fernando.
 const LOGO = {
   dbc: "/assets/games/game_dbc-v3.webp",
   dbsb: "/assets/games/game_dbsb.webp",
